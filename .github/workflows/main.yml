@@ -1,0 +1,19 @@
+name: Build UACME
+on: [workflow_dispatch]  # 手动触发
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: Build UACME (x64 Release)
+        run: |
+          cd Source
+          msbuild UACME.sln /p:Configuration=Release /p:Platform=x64
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: UACME-Binaries
+          path: Bin
